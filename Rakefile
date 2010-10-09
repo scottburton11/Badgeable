@@ -6,5 +6,5 @@ task :build do
 end
  
 task :release => :build do
-  system "gem push badgeable-#{MapReduced::VERSION}.gem"
+  system "gem push badgeable-#{Badgeable::VERSION}.gem"
 end
