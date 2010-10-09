@@ -7,9 +7,6 @@ require 'badgeable/config'
 require 'badgeable/subject'
 
 module Badgeable  
-  
-  VERSION = "0.0.1"
-  
   def self.included(receiver)
     receiver.class_eval %Q{ 
       references_many :badges, :stored_as => :array, :class_name => "Badgeable::Badge", :inverse_of => :#{receiver.to_s.tableize}
