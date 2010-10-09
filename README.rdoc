@@ -1,0 +1,65 @@
+= About Badgeable
+
+Badgeable is an elegant DSL for awarding badges
+
+== Overview
+
+Badgeable provides an elegant DSL for describing and awarding badges
+to your Ruby objects.
+
+== Usage
+
+Describe the badges you want to award using the badge block. The only 
+configuration directive required for each badge is the name of the badge
+and the name constant of the awarding class:
+
+class Person
+  include Mongoid::Document
+  include Badgeable
+end
+
+badge "Big Eater" do
+  thing Nacho
+  count 40
+  subject :person
+  conditions do |nacho|
+    nacho.spicy?
+  end
+end
+
+would award the "Big Eater" badge to each Person who eats 40 spicy nachos.
+
+You can also award arbitrary badges using your own business logic by 
+calling #award_badge(badge_name) on any Badgeable instance:
+
+yehuda = Person.create(:name => "Yehuda Katz")
+yehuda.award_badge("Total Badass")
+
+
+== Requirements
+
+Currently Mongoid is the only ORM supported. Watch this space.
+
+= License
+
+Copyright (c) 2010 Scott Burton
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
