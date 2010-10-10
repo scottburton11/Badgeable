@@ -16,6 +16,9 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "badgeable"
 
   s.add_development_dependency "bundler", ">= 1.0.0"
+  s.add_development_dependency "rspec", ">= 2.0.0.rc"
+  s.add_development_dependency "cucumber"
+  s.add_development_dependency "factory_girl", ">= 1.3.2"
   
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
