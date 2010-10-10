@@ -5,8 +5,9 @@ require 'mongoid'
 require 'badgeable/award'
 require 'badgeable/badge'
 require 'badgeable/config'
+require 'badgeable/dsl'
 require 'badgeable/subject'
 require 'badgeable/version'
-require 'rails/railtie' if defined?(Rails)
+require 'badgeable/railtie' if defined?(Rails)
 
 module Badgeable; end
