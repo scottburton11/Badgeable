@@ -1,6 +1,6 @@
 module Badgeable
   class Railtie < ::Rails::Railtie
-    initializer do
+    initializer "badgeable.assign_badge_definitions_file" do
       Badgeable::Config.badge_definitions = Pathname.new("#{Rails.root}/lib/badges.rb")
     end
     
