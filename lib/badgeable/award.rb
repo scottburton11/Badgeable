@@ -27,12 +27,13 @@ module Badgeable
     # 
     # See README for usage examples
     # 
-    def badge(name, &block)
+    def badge(name, options = {}, &block)
+      after_callback = options[:after] || :create
       config = Badgeable::Config.new
       config.instance_eval(&block)
       method_name = name.titleize.gsub(/\s/, "").underscore
       config.klass.class_eval do
-        set_callback :create, :after, "award_#{method_name}_badge".to_sym
+        set_callback after_callback, :after, "award_#{method_name}_badge".to_sym
         define_method "award_#{method_name}_badge".to_sym, Proc.new {
           if config.conditions_array.all? {|p| p.call(self) }
             self.send(config.subject_proc.call(self)).award_badge(name)
