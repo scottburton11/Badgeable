@@ -21,7 +21,7 @@ module Badgeable
       }
 
       Badgeable::Badge.class_eval %Q{
-        references_many :#{receiver.to_s.tableize}, :inverse_of => :badges, :stored_as => :array, :inverse_of => :badges
+        references_many :#{receiver.to_s.tableize}, :inverse_of => :badges, :stored_as => :array
 
         def recipients
           #{receiver}.where(:badge_ids => id)
