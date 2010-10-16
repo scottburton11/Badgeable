@@ -35,7 +35,7 @@ module Badgeable
         set_callback :create, :after, "award_#{method_name}_badge".to_sym
         define_method "award_#{method_name}_badge".to_sym, Proc.new {
           if config.conditions_array.all? {|p| p.call(self) }
-            self.send(config.subject_name).award_badge(name)
+            self.send(config.subject_proc.call(self)).award_badge(name)
           end
         }
       end

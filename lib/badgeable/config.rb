@@ -5,15 +5,23 @@ module Badgeable
       attr_accessor :badge_definitions
     end
     
-    attr_reader :threshold, :klass, :conditions_array, :subject_name
+    attr_reader :threshold, :klass, :conditions_array, :subject_proc
     
     def initialize
       @conditions_array = [Proc.new {true}]
-      @subject_name = :user
+      @subject_proc = Proc.new{:user}
     end
     
-    def subject(sym)
-      @subject_name = sym
+    def subject(sym = nil, &block)
+      if block_given?
+        @subject_proc = Proc.new {|instance|
+          block.call(instance)
+        }
+      else
+        @subject_proc = Proc.new {
+          sym
+        }
+      end
     end
     
     def count(n = 1, &block)
