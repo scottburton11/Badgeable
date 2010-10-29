@@ -9,17 +9,22 @@ module Badgeable
     
     def initialize
       @conditions_array = [Proc.new {true}]
-      @subject_proc = Proc.new{:user}
+      subject :user
     end
     
     def subject(sym = nil, &block)
+      @subject_name = sym
       if block_given?
         @subject_proc = Proc.new {|instance|
           block.call(instance)
         }
       else
-        @subject_proc = Proc.new {
-          sym
+        @subject_proc = Proc.new { |instance|
+          if klass.to_s.underscore.to_sym == @subject_name
+            instance
+          else
+            instance.send(sym)
+          end
         }
       end
     end
@@ -32,7 +37,7 @@ module Badgeable
       else
         count_proc = Proc.new { |instance|
           instance.instance_eval %Q{
-            #{klass}.where(:#{subject_name}_id => #{subject_name}.id).count >= #{n}
+            #{klass}.where(:#{@subject_name}_id => #{@subject_name}.id).count >= #{n}
           }
         }
       end

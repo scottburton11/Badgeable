@@ -1,2 +1,4 @@
 pkg
 .bundle
+*/.DS_Store
+.DS_Store
