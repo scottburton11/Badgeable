@@ -70,7 +70,9 @@ in Rails.root/lib/badges.rb
 
 == Requirements
 
-Currently Mongoid is the only ORM supported. Watch this space.
+=== Supported ORMs
+* Mongoid
+* ActiveRecord
 
 = License
 
