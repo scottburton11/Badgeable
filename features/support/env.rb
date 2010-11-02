@@ -1,9 +1,9 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'..', '..', 'lib'))
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__),'..', '..', 'lib')))
 
 require 'cucumber'
 require 'rspec/expectations'
 require 'badgeable'
+require 'mongoid'
 
 Mongoid.configure do |config|
   config.master = Mongo::Connection.new.db("badgeable_test")
