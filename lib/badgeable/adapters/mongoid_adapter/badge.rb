@@ -10,6 +10,6 @@ class Badge
   end
   
   def icon
-    "/images/#{name.parameterize}.jpg"
+    "#{name.parameterize}.png"
   end
 end
