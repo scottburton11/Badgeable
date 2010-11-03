@@ -25,6 +25,11 @@ end
 
 class Badging < ActiveRecord::Base
   belongs_to :badge
+  scope :unseen, {:where => {:seen => false}}
+  
+  def mark_as_seen
+    update_attributes(:seen => true)
+  end
 end  
 
 class Badge < ActiveRecord::Base
@@ -33,6 +38,6 @@ class Badge < ActiveRecord::Base
   end
   
   def icon
-    "/images/#{name}"
+    "/images/#{name.parameterize}.jpg"
   end
 end

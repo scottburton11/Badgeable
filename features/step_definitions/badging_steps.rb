@@ -37,16 +37,20 @@ When /^a diner creates (\d+) meals$/ do |num|
 end
 
 When /^the user has completed their profile$/ do
-  @user = User.create
+  Given %Q{I am a user}
   @user.profile_completeness = 100
   @user.save
 end
 
 When /^the user has written (\d+) reviews$/ do |num|
-  @user = User.create
+  Given %Q{I am a user}
   num.to_i.times do
     @user.reviews.create
   end
+end
+
+Given /^I am a user$/ do
+  @user = User.create
 end
 
 Then /^the diner should have the "([^\"]*)" badge$/ do |badge_name|
@@ -55,4 +59,33 @@ end
 
 Then /^the user should have the "([^\"]*)" badge$/ do |badge_name|
   @user.should have_badge_named(badge_name)
+end
+
+Given /^I have (\d+) badges already$/ do |num|
+  Given %Q{I am a user}
+  num.to_i.times do |n|
+    badging = @user.award_badge("Badge #{n}")
+    badging.update_attributes(:seen => true)
+  end
+end
+
+Given /^I have just been awarded (\d+) badges$/ do |num|
+  Given %Q{I am a user}
+  num.to_i.times do |n|
+    @user.award_badge("Unseen Badge #{n}")
+  end
+end
+
+Then /^I should have (\d+) unseen badges$/ do |num|
+  @user.badgings.unseen.count.should eql(num.to_i)
+end
+
+Given /^I have (\d+) badges$/ do |num|
+  Given %Q{I have #{num} badges already}
+end
+
+When /^my unseen badges are marked as seen$/ do
+  @user.badgings.each do |badging|
+    badging.mark_as_seen
+  end
 end

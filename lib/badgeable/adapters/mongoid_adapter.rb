@@ -2,34 +2,39 @@ module Badgeable
   module Adapters
     module MongoidAdapter
       def self.included(receiver)
-        receiver.class_eval %Q{ 
-          references_many :badges, :stored_as => :array, :class_name => "Badge", :inverse_of => :#{receiver.to_s.tableize}
-        }
+        receiver.class_eval do
+          embeds_many :badgings
+        end
         
-        Badge.class_eval %Q{
-          references_many :#{receiver.to_s.tableize}, :inverse_of => :badges, :stored_as => :array
-        
-          def recipients
-            #{receiver}.where(:badge_ids => id)
+        ::Badging.class_eval %Q{
+          embedded_in :#{receiver.to_s.underscore}, :inverse_of => :badgings
+          def receiver
+            #{receiver.to_s.underscore}
           end
         }
+        
+        ::Badge.class_eval %Q{
+          def recipients
+            #{receiver}.where("badgings.badge_id" => id)
+          end
+        }
+        receiver.send(:include, InstanceMethods)
       end
     end
-  end
-end
-
-class Badge
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  
-  field :name
-  index :name
-  
-  def self.find_or_create_by_name(name)
-    criteria.where(:name => name).first || create(:name => name)
-  end
-  
-  def icon
-    "/images/#{name}"
+    
+    module InstanceMethods
+      def award_badge(name)
+        badge = Badge.find_or_create_by_name(name)
+        badgings.create(:badge_id => badge.id) unless has_badge?(badge)
+      end
+      
+      def badges
+        Badge.where(:_id.in => badgings.map(&:badge_id))
+      end
+      
+      def unseen_badges
+        Badge.where(:_id.in => badgings.unseen.map(&:badge_id))
+      end
+    end
   end
 end

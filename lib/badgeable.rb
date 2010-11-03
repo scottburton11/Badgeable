@@ -3,7 +3,17 @@ require 'active_support/callbacks'
 require 'active_support/inflector'
 require 'active_support/dependencies'
 require 'active_support/concern'
-require 'badgeable/railtie' if defined?(Rails)
+
+# if defined?(Mongoid)
+  autoload :Badge,   'badgeable/adapters/mongoid_adapter/badge'
+  autoload :Badging, 'badgeable/adapters/mongoid_adapter/badging'
+# end
+# 
+# if defined?(ActiveRecord)
+#   autoload :Badge,   'badgeable/adapters/active_record/badge'
+#   autoload :Badging, 'badgeable/adapters/active_record/badging'
+# end
+
 
 module Badgeable
   autoload :Adapters,     'badgeable/adapters'
@@ -17,5 +27,7 @@ module Badgeable
     autoload :MongoidAdapter,      "badgeable/adapters/mongoid_adapter"
   end
 end
+
+require 'badgeable/railtie' if defined?(Rails)
 
 module Badgeable; end
