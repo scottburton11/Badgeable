@@ -18,3 +18,12 @@ Feature: Easily award badges to any Ruby class (given enough effort on your part
     When the user has written 10 reviews
     Then the user should have the "Guppy" badge
   
+  Scenario: If I supply some extra attributes, the badge gets created with them
+    Given A user gets the "Awesome" badge with a custom description "This badge is awesome" and icon "awesome-badge.jpg" for being awesome
+    When they are awesome
+    Then the user should have the "Awesome" badge
+    And the badge description should be "This badge is awesome"
+    And the badge icon should be "awesome-badge.jpg"
+  
+  
+  

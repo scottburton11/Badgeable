@@ -31,12 +31,13 @@ module Badgeable
       after_callback = options[:after] || :create
       config = Badgeable::Config.new
       config.instance_eval(&block)
+      attrs = [:description, :icon].inject({}) {|hash, key| hash.merge(key => config.send(key)) }
       method_name = "award_#{name.titleize.gsub(/\s/, '').underscore}_badge".to_sym
       config.klass.class_eval do
         set_callback after_callback, :after, method_name
         define_method method_name, Proc.new {
           if config.conditions_array.all? {|p| p.call(self) }
-            config.subject_proc.call(self).award_badge(name)
+            config.subject_proc.call(self).award_badge(name, attrs)
           end
         }
       end

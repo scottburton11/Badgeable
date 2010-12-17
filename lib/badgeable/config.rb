@@ -53,5 +53,24 @@ module Badgeable
         block.call(instance)
       }
     end 
+    
+    def icon(*args)
+      raise ArgumentError unless args.length <= 1
+      if args.length == 1
+        @icon = args[0]
+      else
+        @icon
+      end
+    end
+    
+    def description(*args)
+      raise ArgumentError unless args.length <= 1
+      if args.length == 1
+        @description = args[0]
+      else
+        @description
+      end
+    end
+    
   end
 end

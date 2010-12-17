@@ -29,6 +29,19 @@ Given /^a User gets the "([^\"]*)" badge when they have written (\d+) reviews$/ 
   }
 end
 
+Given /^A user gets the "([^"]*)" badge with a custom description "([^"]*)" and icon "([^"]*)" for being awesome$/ do |badge_name, description, icon|
+  User.class_eval %Q{
+    badge "#{badge_name}", :after => :save do
+      thing User
+      conditions do |user|
+        user.awesome?
+      end
+      description "#{description}"
+      icon "#{icon}"
+    end
+  }
+end
+
 When /^a diner creates (\d+) meals$/ do |num|
   @diner = Diner.create
   num.to_i.times do
@@ -47,6 +60,12 @@ When /^the user has written (\d+) reviews$/ do |num|
   num.to_i.times do
     @user.reviews.create
   end
+end
+
+When /^they are awesome$/ do
+  Given %Q{I am a user}
+  @user.awesome = true
+  @user.save
 end
 
 Given /^I am a user$/ do
@@ -88,4 +107,14 @@ When /^my unseen badges are marked as seen$/ do
   @user.badgings.each do |badging|
     badging.mark_as_seen
   end
+end
+
+Then /^the badge description should be "([^"]*)"$/ do |description|
+  @badge = @user.badges.first
+  @badge.description.should eql(description)
+end
+
+Then /^the badge icon should be "([^"]*)"$/ do |icon|
+  @badge = @user.badges.first
+  @badge.icon.should eql(icon)
 end

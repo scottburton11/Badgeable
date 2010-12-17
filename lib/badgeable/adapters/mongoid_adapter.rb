@@ -23,8 +23,10 @@ module Badgeable
     end
     
     module InstanceMethods
-      def award_badge(name)
-        badge = Badge.find_or_create_by_name(name)
+      def award_badge(*args)
+        options = args.extract_options!
+        name = args[0]
+        badge = Badge.find_or_create_by_name(name, options)
         badgings.create(:badge_id => badge.id) unless has_badge?(badge)
       end
       

@@ -2,8 +2,10 @@ module Badgeable
   module Subject
     # Award a named badge to this object. If the badge doesn't exist
     # in the database already, it's created by name.
-    def award_badge(name)
-      badge = Badge.find_or_create_by_name(name)
+    def award_badge(*args)
+      options = args.extract_options!
+      name = args[0]
+      badge = Badge.find_or_create_by_name(name, options)
       badges << badge unless has_badge?(badge)      
     end
     
