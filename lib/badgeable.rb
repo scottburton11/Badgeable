@@ -5,8 +5,8 @@ require 'active_support/dependencies'
 require 'active_support/concern'
 
 # if defined?(Mongoid)
-  autoload :Badge,   'badgeable/adapters/mongoid_adapter/badge'
-  autoload :Badging, 'badgeable/adapters/mongoid_adapter/badging'
+  # autoload :Badge,   'badgeable/adapters/mongoid_adapter/badge'
+  # autoload :Badging, 'badgeable/adapters/mongoid_adapter/badging'
 # end
 # 
 # if defined?(ActiveRecord)
@@ -22,10 +22,10 @@ module Badgeable
   autoload :Dsl,          'badgeable/dsl'
   autoload :Subject,      'badgeable/subject'
   autoload :Verson,       'badgeable/version'
-  module Adapters
-    autoload :ActiveRecordAdapter, "badgeable/adapters/active_record_adapter"
-    autoload :MongoidAdapter,      "badgeable/adapters/mongoid_adapter"
-  end
+  # module Adapters
+  #   autoload :ActiveRecordAdapter, "badgeable/adapters/active_record_adapter"
+  #   autoload :MongoidAdapter,      "badgeable/adapters/mongoid_adapter"
+  # end
 end
 
 require 'badgeable/railtie' if defined?(Rails)
