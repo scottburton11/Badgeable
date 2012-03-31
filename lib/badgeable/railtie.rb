@@ -17,5 +17,10 @@ module Badgeable
     config.to_prepare do
       Badgeable::Dsl.class_eval Badgeable::Config.badge_definitions
     end
+
+    generators do
+      require "generators/badgeable_generator"
+      require "generators/setup/definitions_generator"
+    end
   end
 end
