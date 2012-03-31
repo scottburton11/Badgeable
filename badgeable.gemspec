@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", ">= 2.0.0.rc"
   s.add_development_dependency "cucumber"
   s.add_development_dependency "factory_girl", ">= 1.3.2"
+  s.add_development_dependency "rake", "~> 0.8"
   
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
