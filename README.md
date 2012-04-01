@@ -63,7 +63,8 @@ also eval a separate file of badge definitions in the context of
 Badgeable::Award.
 
 When used with Rails, Badgeable will look for badging definitions
-in Rails.root/lib/badges.rb
+in Rails.root/lib/badges.rb; `rails g badgeable:definitions` to
+get started.
 
 Supported ORMs
 --------------
@@ -72,7 +73,7 @@ Supported ORMs
 
 License
 -------
-Copyright (c) 2010 Scott Burton
+Copyright (c) 2010-2012 Scott Burton
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
