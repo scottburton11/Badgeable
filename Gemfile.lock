@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    badgeable (0.5.0)
+    badgeable (0.5.1)
 
 GEM
   remote: http://rubygems.org/
