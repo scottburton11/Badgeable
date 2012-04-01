@@ -1,64 +1,61 @@
-= About Badgeable
-
+About Badgeable
+===============
 Badgeable is an elegant DSL for awarding badges
 
-== Overview
-
+Overview
+--------
 Badgeable provides an elegant DSL for describing and awarding badges
 to your Ruby objects.
 
-== Usage
-
+Usage
+-----
 Describe the badges you want to award using the badge block. The only 
 configuration directive required for each badge is the name of the badge
 and the name constant of the awarding class:
 
-  class Person
-    include Mongoid::Document
-    include Badgeable::Subject
-    embeds_many :nachos
-  end
-
-  badge "Nacho Nacho Man" do
-    thing Nacho
-    count 40
-    subject :person
-    conditions do |nacho|
-      nacho.spicy?
+    class Person
+      include Mongoid::Document
+      include Badgeable::Subject
+      embeds_many :nachos
     end
-  end
+
+    badge "Nacho Nacho Man" do
+      thing Nacho
+      count 40
+      subject :person
+      conditions do |nacho|
+        nacho.spicy?
+      end
+    end
 
 would award the "Nacho Nacho Man" badge to each Person who eats 40 
 nachos, and the last one was spicy.
 
-  class Person
-    include Mongoid::Document
-    include Badgeable::Subject
-    references_many :meals
-  end
+    class Person
+      include Mongoid::Document
+      include Badgeable::Subject
+      references_many :meals
+    end
 
-  badge "Fancy Pants" do
-    thing Meal
-    subject :person
-    count
-      Meal.where(:price_cents.gte => 10000).count >= 12
+    badge "Fancy Pants" do
+      thing Meal
+      subject :person
+      count
+        Meal.where(:price_cents.gte => 10000).count >= 12
+      end
+      conditions do |meal|
+        meal.restaurant.city != meal.eater.city
+      end
     end
-    conditions do |meal|
-      meal.restaurant.city != meal.eater.city
-    end
-  end
   
 would award the "Fancy Pants" badge to the diner who has eaten 12 
 expensive meals where the awarding meal was out of town.
 
 You can also award arbitrary badges using your own business logic by 
-calling #award_badge(badge_name) on any Badgeable instance:
+calling #award_badge(badge_name) on any Badgeable instance.
 
-  yehuda = Person.create(:name => "Yehuda Katz")
-  yehuda.award_badge("Total Badass")
-
-== Setup
-
+Setup
+-----
 Badge recipient classes should include Badgeable::Subject.
 Extending an awarding class with Badgeable::Award will allow you
 to define badge blocks in the awarding class definition. You may
@@ -68,14 +65,13 @@ Badgeable::Award.
 When used with Rails, Badgeable will look for badging definitions
 in Rails.root/lib/badges.rb
 
-== Requirements
-
-=== Supported ORMs
+Supported ORMs
+--------------
 * Mongoid
-* ActiveRecord
+* ActiveRecord - [badgeable_active_record](https://github.com/scottburton11/badgeable_active_record)
 
-= License
-
+License
+-------
 Copyright (c) 2010 Scott Burton
 
 Permission is hereby granted, free of charge, to any person obtaining
