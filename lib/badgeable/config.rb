@@ -49,7 +49,26 @@ module Badgeable
       end
       @conditions_array << count_proc
     end
+   
+    def icon(*args)
+      raise ArgumentError unless args.length <= 1
+      if args.length == 1
+        @icon = args[0]
+      else
+        @icon
+      end
+    end
     
+    def description(*args)
+      raise ArgumentError unless args.length <= 1
+      if args.length == 1
+        @description = args[0]
+      else
+        @description
+      end
+    end
+   
+
     def thing(klass)
       @klass = klass
     end
