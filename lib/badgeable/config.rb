@@ -7,7 +7,7 @@ module Badgeable
       attr_accessor :badge_definitions
 
       def custom_attributes
-        @custom_attributes ||= Set.new
+        @custom_attributes ||= Set.new([:icon, :description])
       end
     end
     
