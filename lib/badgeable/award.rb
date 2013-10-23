@@ -31,7 +31,7 @@ module Badgeable
       after_callback = options[:after] || :create
       config = Badgeable::Config.new
       config.instance_eval(&block)
-      attrs = [:description, :icon].inject({}) {|hash, key| hash.merge(key => config.send(key)) }
+      attrs = Badgeable::Config.custom_attributes.inject({}) { |hash, key| hash.merge(key => config.send(key)) }
       method_name = "award_#{name.titleize.gsub(/\s/, '').underscore}_badge".to_sym
       config.klass.class_eval do
         set_callback after_callback, :after, method_name

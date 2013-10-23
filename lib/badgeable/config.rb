@@ -1,8 +1,14 @@
+require 'set'
+
 module Badgeable
   class Config
     
     class << self
       attr_accessor :badge_definitions
+
+      def custom_attributes
+        @custom_attributes ||= Set.new([:icon, :description])
+      end
     end
     
     attr_reader :threshold, :klass, :conditions_array, :subject_proc
@@ -43,17 +49,7 @@ module Badgeable
       end
       @conditions_array << count_proc
     end
-    
-    def thing(klass)
-      @klass = klass
-    end
-    
-    def conditions(&block)
-      @conditions_array << Proc.new {|instance|
-        block.call(instance)
-      }
-    end 
-    
+   
     def icon(*args)
       raise ArgumentError unless args.length <= 1
       if args.length == 1
@@ -70,6 +66,40 @@ module Badgeable
       else
         @description
       end
+    end
+   
+
+    def thing(klass)
+      @klass = klass
+    end
+    
+    def conditions(&block)
+      @conditions_array << Proc.new {|instance|
+        block.call(instance)
+      }
+    end 
+   
+    # If an undefined method is called with arguments, treat it 
+    # as a custom attribute setter.
+    def method_missing(meth, *args, &blk)
+      if args.length > 0
+        self.class.add_custom_attribute meth
+        send meth, *args, &blk
+      else
+        super meth, *args, &blk
+      end
+    end
+
+    def self.add_custom_attribute(attribute)
+      define_method attribute.to_sym, lambda { |*args|
+        raise ArgumentError unless args.length <= 1
+        if args.length == 1
+          instance_variable_set :"@#{attribute}", args[0]
+        else
+          instance_variable_get :"@#{attribute}"
+        end        
+      }
+      custom_attributes << attribute
     end
     
   end
